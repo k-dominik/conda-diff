@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="conda_diff",
+    name="conda-diff",
     version="0.1.0dev1",
     author="Dominik Kutra",
     license="MIT",
@@ -11,11 +11,6 @@ setup(
     package_dir={"": "src"},
     packages=find_packages("./src"),
     include_package_data=True,
-    install_requires=[
-        # 'dep1>=1.0,<2',
-        # 'dep2>=2'
-    ],
-    entry_points={
-        "console_scripts": ["conda_diff = conda_diff.__main__:main"]
-    },
+    install_requires=["networkx", "sh"],
+    entry_points={"console_scripts": ["conda-package_diff = conda_package_diff.__main__:main"]},
 )

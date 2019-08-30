@@ -1,5 +1,8 @@
+import sh
+
+
 def main():
-    print("Implement conda_diff's main function!")
+    print(sh.conda("--version"))
 
 
 if __name__ == "__main__":
