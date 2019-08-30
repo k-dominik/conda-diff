@@ -1,0 +1,14 @@
+name: conda_diff
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+
+  - black
+  - pre_commit
+
+
+  - bumpversion
+
+  - pytest
+

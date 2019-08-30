@@ -1,0 +1,38 @@
+language: generic
+
+env:
+  global:
+    CONDA_ROOT=$HOME/miniconda
+    TEST_ENV=test-env
+    MINICONDA_URL=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+before_install:
+  - if [[ ! -d ${CONDA_ROOT} ]]; then
+      echo "Installing Miniconda...";
+      wget $MINICONDA_URL -O miniconda.sh &&
+      bash miniconda.sh -b -p ${CONDA_ROOT};
+    else
+      echo "Using cached Miniconda install";
+    fi
+  - echo ". $CONDA_ROOT/etc/profile.d/conda.sh" >> ~/.bashrc
+  - source ~/.bashrc
+  - conda update --yes -q conda -c conda-forge
+  - conda config --set always_yes true
+  - conda config --set anaconda_upload no
+  - conda install -q conda-build pip anaconda-client
+
+install:
+  - conda build conda-recipe
+
+before_script:
+  - conda env remove -q -n ${TEST_ENV}
+  - conda env create -n $TEST_ENV --file dev/environment-dev.yaml
+  - conda install -n $TEST_ENV --use-local conda_diff
+
+script:
+  - conda activate $TEST_ENV
+  - pytest tests
+
+cache:
+  directories:
+   - CONDA_ROOT
