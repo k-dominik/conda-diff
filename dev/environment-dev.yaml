@@ -1,14 +1,13 @@
-name: conda_diff
+name: conda-diff
 channels:
   - defaults
   - conda-forge
 dependencies:
-
   - black
-  - pre_commit
-
-
   - bumpversion
-
+  - mypy
+  - pre_commit
   - pytest
-
+# actual deps
+  - networkx
+  - sh
