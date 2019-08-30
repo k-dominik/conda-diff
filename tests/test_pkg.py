@@ -1,6 +1,6 @@
 import dataclasses
 import pytest
-from conda_diff.pkg import Package, package_diff
+from conda_diff.pkg import Package, package_diff, PackageDiffException
 
 
 def spec(**kwargs) -> dict:
@@ -33,7 +33,6 @@ def test_package_create():
         ({"build_string": "abc"}, [("build_string", "B", "abc")]),
         ({"channel": "something"}, [("channel", "C", "something")]),
         ({"dist_name": "nope"}, [("dist_name", "D", "nope")]),
-        ({"name": "who knows"}, [("name", "E", "who knows")]),
         ({"platform": "1234"}, [("platform", "F", "1234")]),
         ({"version": "xxxxx"}, [("version", "G", "xxxxx")]),
         ({"base_url": "A2", "version": "xxxxx"}, [("base_url", "A", "A2"), ("version", "G", "xxxxx")]),
@@ -43,5 +42,16 @@ def test_package_package_diff(update_dict, expected_package_diff):
     package_a = Package(**spec())
     spec_b = spec(**update_dict)
     package_b = Package(**spec_b)
-    package_diffs = [dataclasses.astuple(x) for x in package_diff(package_a, package_b)]
-    assert package_diffs == expected_package_diff
+    diff = package_diff(package_a, package_b)
+    differences = [dataclasses.astuple(x) for x in diff.diff]
+    assert differences == expected_package_diff
+
+
+def test_package_incompatible_diff():
+    spec_a = spec()
+    spec_b = spec(name="something_else")
+    package_a = Package(**spec_a)
+    package_b = Package(**spec_b)
+    with pytest.raises(PackageDiffException):
+        package_diff(package_a, package_b)
+
