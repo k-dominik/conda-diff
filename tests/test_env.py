@@ -32,21 +32,44 @@ def test_conda_env_construction(package_specs):
     assert conda_env.package_spec == specs
 
 
-def test_conda_env_diff():
-    names_a = ["A", "B", "C"]
-    names_b = ["A", "B", "C", "D"]
+def test_conda_env_different_pacakges():
+    names_a = ["A", "B", "C", "D"]
+    names_b = ["A", "B", "C", "E"]
     package_updates_a = [{"name": x} for x in names_a]
     package_updates_b = [{"name": x} for x in names_b]
     specs_a = [package(**x) for x in package_updates_a]
     specs_b = [package(**x) for x in package_updates_b]
+
     env_a = CondaEnvironment("Env-A", specs_a)
     env_b = CondaEnvironment("Env-B", specs_b)
+
     diff = conda_environment_diff(env_a, env_b)
+
     assert diff.environment_a == env_a
     assert diff.environment_b == env_b
-    assert sorted([p.name for p in diff.common]) == sorted(names_a)
+    assert sorted([p.name for p in diff.common]) == ["A", "B", "C"]
     assert len(diff.diff) == 0
-    assert len(diff.only_a) == 0
+    assert len(diff.only_a) == 1
+    assert diff.only_a[0].name == "D"
     assert len(diff.only_b) == 1
-    assert diff.only_b[0].name == "D"
+    assert diff.only_b[0].name == "E"
 
+
+def test_conda_env_different_pacakge_diffs():
+    names = ["A", "B", "C", "D"]
+    package_updates_a = [{"name": x} for x in names]
+    package_updates_b = [{"name": x} for x in names]
+    package_updates_b[0].update(build_number=2)
+    specs_a = [package(**x) for x in package_updates_a]
+    specs_b = [package(**x) for x in package_updates_b]
+
+    env_a = CondaEnvironment("Env-A", specs_a)
+    env_b = CondaEnvironment("Env-B", specs_b)
+
+    diff = conda_environment_diff(env_a, env_b)
+
+    assert diff.environment_a == env_a
+    assert diff.environment_b == env_b
+    assert sorted([p.name for p in diff.common]) == names
+    assert len(diff.diff) == 1
+    assert diff.diff[0].name == "A"

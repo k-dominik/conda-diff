@@ -54,4 +54,3 @@ def test_package_incompatible_diff():
     package_b = Package(**spec_b)
     with pytest.raises(PackageDiffException):
         package_diff(package_a, package_b)
-

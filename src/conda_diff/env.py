@@ -23,7 +23,11 @@ class CondaEnvironmentDiff:
     common: Iterable[Package]
     only_a: Iterable[Package]
     only_b: Iterable[Package]
-    diff: Iterable[PackageDiff]
+
+    @property
+    def diff(self):
+        diffs = [x for x in self.common if x.diff]
+        return diffs
 
 
 def conda_environment_diff(environment_a: CondaEnvironment, environment_b: CondaEnvironment) -> CondaEnvironmentDiff:
@@ -36,14 +40,7 @@ def conda_environment_diff(environment_a: CondaEnvironment, environment_b: Conda
 
     # check common packages for diffs
     package_diffs = [package_diff(environment_a.get_package(x), environment_b.get_package(x)) for x in common]
-    common_packages = [x for x in package_diffs if not x.diff]
-    diffs = [x for x in package_diffs if x.diff]
-    return CondaEnvironmentDiff(
-        environment_a=environment_a,
-        environment_b=environment_b,
-        common=common_packages,
-        only_a=only_a,
-        only_b=only_b,
-        diff=diffs,
-    )
 
+    return CondaEnvironmentDiff(
+        environment_a=environment_a, environment_b=environment_b, common=package_diffs, only_a=only_a, only_b=only_b
+    )
