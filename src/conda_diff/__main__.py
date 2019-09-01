@@ -1,9 +1,5 @@
-import sh
-
-
-def main():
-    print(sh.conda("--version"))
+from conda_diff import cli
 
 
 if __name__ == "__main__":
-    main()
+    cli.main()
