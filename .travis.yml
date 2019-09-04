@@ -27,7 +27,7 @@ install:
 before_script:
   - conda env remove -q -n ${TEST_ENV}
   - conda env create -n $TEST_ENV --file dev/environment-dev.yaml
-  - conda install -n $TEST_ENV --use-local conda_diff
+  - conda install -n $TEST_ENV --use-local conda-diff
 
 script:
   - conda activate $TEST_ENV

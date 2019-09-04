@@ -11,6 +11,11 @@ source:
 build:
   noarch: python
   script: python -m pip install --no-deps --ignore-installed .
+  entry_points:
+    {% for ep in data['entry_points']['console_scripts'] %}
+    - {{ ep }}
+    {% endfor %}
+
 
 requirements:
   build:
