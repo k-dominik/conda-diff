@@ -59,7 +59,11 @@ def main():
 
     diff = conda_environment_diff(environment_a, environment_b)
 
-    formatter = SimpleDiffFormatter(diff, verbosity=args.verbose)
+    verbosity = 0
+    if args.verbose is not None:
+        verbosity = verbosity
+
+    formatter = SimpleDiffFormatter(diff, verbosity=verbosity)
     print(formatter)
 
 

@@ -30,8 +30,8 @@ class SimplePackageFormatter(FormatterBase):
     def __repr__(self):
         rep_str = f"{self._package.name}"
         for k in sorted(self._package.diff, key=lambda x: x.name):
-            rep_str += "\n"
             if self._verbosity > 0:
+                rep_str += "\n"
                 rep_str += f"  {k.name}"
             if self._verbosity > 1:
                 rep_str += f": {k.val_a} -> {k.val_b}"

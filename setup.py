@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="conda-diff",
-    version="0.1.1dev0",
+    version="0.1.1dev1",
     author="Dominik Kutra",
     license="MIT",
     description="Command line tool to compare conda environments",
