@@ -6,6 +6,7 @@ import sh
 from conda_diff.env import CondaEnvironment, conda_environment_diff
 from conda_diff.pkg import Package
 from conda_diff.reader import read_env_json_file
+from conda_diff.formatters import SimpleFormatter
 from typing import Iterable, Mapping, Union
 
 
@@ -54,7 +55,9 @@ def main():
     environment_b = CondaEnvironment(args.environment_b, lists[1])
 
     diff = conda_environment_diff(environment_a, environment_b)
-    print(diff)
+
+    formatter = SimpleFormatter(diff)
+    print(formatter)
 
 
 if __name__ == "__main__":
