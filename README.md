@@ -57,3 +57,5 @@ Packages Only In py37.json:
 Todos:
 
 - [ ] add more, better formatters
+  - [ ] `.md` output
+- [ ] add json output
