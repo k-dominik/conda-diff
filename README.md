@@ -52,6 +52,42 @@ Packages Only In py36.json:
 Packages Only In py37.json:
 --------------------------
   bzip2
+
+# Increase verbosity to get more detailed output:
+$ conda-diff py36.json py37.json -vv
+
+Diff report for environments py36.json and py37.json:
+
+ ...
+
+Common Packages (with diff)
+---------------------------
+  certifi
+    build_string: py36_1 -> py37_1
+    dist_name: certifi-2019.6.16-py36_1 -> certifi-2019.6.16-py37_1
+  pip
+    build_string: py36_0 -> py37_0
+    dist_name: pip-19.2.3-py36_0 -> pip-19.2.3-py37_0
+  python
+    build_number: 1005 -> 1
+    build_string: h357f687_1005 -> h33d41f4_1
+    dist_name: python-3.6.7-h357f687_1005 -> python-3.7.3-h33d41f4_1
+    version: 3.6.7 -> 3.7.3
+  setuptools
+    build_string: py36_0 -> py37_0
+    dist_name: setuptools-41.2.0-py36_0 -> setuptools-41.2.0-py37_0
+  wheel
+    build_string: py36_0 -> py37_0
+    dist_name: wheel-0.33.6-py36_0 -> wheel-0.33.6-py37_0
+
+Packages Only In py36.json:
+--------------------------
+
+
+Packages Only In py37.json:
+--------------------------
+  bzip2
+
 ```
 
 Todos:
