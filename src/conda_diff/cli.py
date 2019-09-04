@@ -61,7 +61,7 @@ def main():
 
     verbosity = 0
     if args.verbose is not None:
-        verbosity = verbosity
+        verbosity = args.verbose
 
     formatter = SimpleDiffFormatter(diff, verbosity=verbosity)
     print(formatter)
