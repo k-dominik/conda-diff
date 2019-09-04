@@ -6,8 +6,9 @@ import sh
 from conda_diff.env import CondaEnvironment, conda_environment_diff
 from conda_diff.pkg import Package
 from conda_diff.reader import read_env_json_file
-from conda_diff.formatters import SimpleFormatter
+from conda_diff.formatters import SimpleDiffFormatter
 from typing import Iterable, Mapping, Union
+from conda_diff import __version__
 
 
 class CondaNotFound(Exception):
@@ -23,6 +24,8 @@ def parse_args():
     p.add_argument(
         "environment_b", type=str, help="Environment name or path to environment json file for environment b"
     )
+    p.add_argument("-v", "--verbose", action="count")
+    p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 
     args = p.parse_args()
     return args
@@ -56,7 +59,7 @@ def main():
 
     diff = conda_environment_diff(environment_a, environment_b)
 
-    formatter = SimpleFormatter(diff)
+    formatter = SimpleDiffFormatter(diff, verbosity=args.verbose)
     print(formatter)
 
 
