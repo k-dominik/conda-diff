@@ -32,6 +32,7 @@ before_script:
 script:
   - conda activate $TEST_ENV
   - pytest tests
+  - conda-diff --version
 
 cache:
   directories:
