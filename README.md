@@ -54,12 +54,14 @@ Packages Only In py37.json:
 --------------------------
   bzip2
 
-# Increase verbosity to get more detailed output:
+```
+Increase verbosity to get more detailed output:
+```bash
 $ conda-diff py36.json py37.json -vv
 
 Diff report for environments py36.json and py37.json:
 
- ...
+ ... (abbreviated for docs)
 
 Common Packages (with diff)
 ---------------------------
