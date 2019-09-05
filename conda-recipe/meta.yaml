@@ -39,5 +39,6 @@ test:
     - pytest tests
 
 about:
-  home: TODO
+  home: https://github.com/k-dominik/conda-diff
+  license: MIT
   summary: Command line tool to compare conda environments
