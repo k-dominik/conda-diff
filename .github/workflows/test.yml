@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -17,7 +18,7 @@ jobs:
       - name: setup conda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          environment-file: .github/workflows/etc/ilastik-env.yaml
+          environment-file: dev/environment-dev.yaml
           activate-environment: test-env
           auto-update-conda: true
           auto-activate-base: false

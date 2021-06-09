@@ -8,6 +8,7 @@ dependencies:
   - mypy
   - pre_commit
   - pytest
+  - pytest-cov
 # actual deps
   - networkx
   - sh
