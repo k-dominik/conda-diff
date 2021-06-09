@@ -5,9 +5,11 @@ channels:
 dependencies:
   - black
   - bumpversion
+  - conda-build
   - mypy
   - pre_commit
   - pytest
+  - pytest-cov
 # actual deps
   - networkx
   - sh

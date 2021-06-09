@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          # for codecov
+          fetch-depth: 5
+      - name: setup conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          environment-file: dev/environment-dev.yaml
+          activate-environment: test-env
+          auto-update-conda: true
+          auto-activate-base: false
+      - name: test
+        shell: bash -l {0}
+        run: |
+          conda develop src
+          pytest --cov-report=xml --cov=conda_diff
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml,
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
