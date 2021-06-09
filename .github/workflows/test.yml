@@ -25,7 +25,7 @@ jobs:
       - name: test
         shell: bash -l {0}
         run: |
-          conda develop .
+          conda develop src
           pytest --cov-report=xml --cov=conda_diff
       - uses: codecov/codecov-action@v1
         with:
