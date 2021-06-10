@@ -12,6 +12,6 @@ setup(
     package_dir={"": "src"},
     packages=find_packages("./src"),
     include_package_data=True,
-    install_requires=["networkx", "sh"],
+    install_requires=["networkx"],
     entry_points={"console_scripts": ["conda-diff = conda_diff.cli:main"]},
 )
