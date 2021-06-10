@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="conda-diff",
-    version="0.2.0dev0",
+    version="0.2.0dev1",
     author="Dominik Kutra",
     license="MIT",
     license_files=("LICENSE",),
