@@ -5,6 +5,7 @@ setup(
     version="0.1.1dev2",
     author="Dominik Kutra",
     license="MIT",
+    license_files=("LICENSE",),
     description="Command line tool to compare conda environments",
     # long_description=description,
     # url='https://...',

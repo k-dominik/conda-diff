@@ -2,7 +2,7 @@ import json
 from argparse import ArgumentParser
 
 import pathlib
-import sh
+from subprocess import check_output
 from conda_diff.env import CondaEnvironment, conda_environment_diff
 from conda_diff.pkg import Package
 from conda_diff.reader import read_env_json_file
@@ -33,11 +33,11 @@ def parse_args():
 
 def get_conda_list(environment_name: str) -> Iterable[Mapping[str, Union[int, str]]]:
     try:
-        specs = sh.conda("list", "--name", environment_name, "--json")
-    except sh.CommandNotFound:
+        specs = check_output(["conda", "list", "--name", environment_name, "--json"])
+    except FileNotFoundError:
         raise CondaNotFound("Conda seems not to be installed or set up properly.")
 
-    spec_list = json.loads(specs.stdout)
+    spec_list = json.loads(specs)
     assert isinstance(spec_list, list)
 
     return [Package(**x) for x in spec_list]
