@@ -55,7 +55,7 @@ def conda_export_yaml(tmpdir, conda_env_list):
     contents = {
         "name": "will-be-ignored",
         "channels": ["will", "be", "ignored"],
-        "dependencies": [f"{pkg["name"]}={pkg["version"]}={pkg["build_string"]}" for pkg in conda_env_list]
+        "dependencies": [f"{pkg['name']}={pkg['version']}={pkg['build_string']}" for pkg in conda_env_list]
     }
     yaml = ruyaml.YAML(typ="safe")
     with filename.open("w") as f:
