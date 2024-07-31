@@ -43,7 +43,9 @@ def test_package_package_diff(update_dict, expected_package_diff):
     spec_b = spec(**update_dict)
     package_b = Package(**spec_b)
     diff = package_diff(package_a, package_b)
-    differences = [dataclasses.astuple(x) for x in diff.diff]
+    # make sure to get a defined sorted order of differences for this test, in case of multiple diffs
+    # these need to be also in the same order in the parametrized tests above
+    differences = sorted([dataclasses.astuple(x) for x in diff.diff], key=lambda x: x[0])
     assert differences == expected_package_diff
 
 

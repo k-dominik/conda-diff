@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from conda_diff.pkg import Package, PackageDiff, package_diff
 from typing import Iterable
+
+from conda_diff.pkg import Package, PackageDiff, package_diff
 
 
 @dataclass(eq=True, frozen=True, repr=True)
@@ -30,7 +31,9 @@ class CondaEnvironmentDiff:
         return diffs
 
 
-def conda_environment_diff(environment_a: CondaEnvironment, environment_b: CondaEnvironment) -> CondaEnvironmentDiff:
+def conda_environment_diff(
+    environment_a: CondaEnvironment, environment_b: CondaEnvironment, ignore_missing_details: bool = False
+) -> CondaEnvironmentDiff:
     assert environment_a.name != environment_b.name
     pnames_a = set(environment_a.package_names)
     pnames_b = set(environment_b.package_names)
@@ -39,7 +42,12 @@ def conda_environment_diff(environment_a: CondaEnvironment, environment_b: Conda
     only_b = [environment_b.get_package(x) for x in (pnames_b - pnames_a)]
 
     # check common packages for diffs
-    package_diffs = [package_diff(environment_a.get_package(x), environment_b.get_package(x)) for x in common]
+    package_diffs = [
+        package_diff(
+            environment_a.get_package(x), environment_b.get_package(x), ignore_missing_details=ignore_missing_details
+        )
+        for x in common
+    ]
 
     return CondaEnvironmentDiff(
         environment_a=environment_a, environment_b=environment_b, common=package_diffs, only_a=only_a, only_b=only_b

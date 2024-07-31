@@ -1,7 +1,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.egg-info
 # C extensions
 *.so
 *.dylib
@@ -22,3 +22,7 @@ coverage.xml
 # logs / text files
 *.txt
 *.log
+
+# sublime-specific files
+*.sublime-project
+*.sublime-workspace

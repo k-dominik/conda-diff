@@ -1,7 +1,7 @@
 name: conda-diff
 channels:
-  - defaults
   - conda-forge
+  - nodefaults
 dependencies:
   - black
   - bumpversion
@@ -12,3 +12,4 @@ dependencies:
   - pytest-cov
 # actual deps
   - networkx
+  - ruyaml

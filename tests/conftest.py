@@ -1,5 +1,7 @@
-import pytest
 import json
+
+import pytest
+import ruyaml
 
 
 @pytest.fixture
@@ -43,5 +45,20 @@ def conda_env_create_list_file(tmpdir, conda_env_create_list):
     filename = tmpdir / "conda-create-list.json"
     with filename.open("w") as f:
         json.dump(conda_env_create_list, f)
+
+    return filename
+
+
+@pytest.fixture
+def conda_export_yaml(tmpdir, conda_env_list):
+    filename = tmpdir / "conda-export.yml"
+    contents = {
+        "name": "will-be-ignored",
+        "channels": ["will", "be", "ignored"],
+        "dependencies": [f"{pkg["name"]}={pkg["version"]}={pkg["build_string"]}" for pkg in conda_env_list]
+    }
+    yaml = ruyaml.YAML(typ="safe")
+    with filename.open("w") as f:
+        yaml.dump(contents, f)
 
     return filename
