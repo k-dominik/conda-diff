@@ -1,14 +1,14 @@
 import json
-from argparse import ArgumentParser
-
 import pathlib
+from argparse import ArgumentParser
 from subprocess import check_output
-from conda_diff.env import CondaEnvironment, conda_environment_diff
-from conda_diff.pkg import Package
-from conda_diff.reader import read_env_json_file
-from conda_diff.formatters import SimpleDiffFormatter
 from typing import Iterable, Mapping, Union
+
 from conda_diff import __version__
+from conda_diff.env import CondaEnvironment, conda_environment_diff
+from conda_diff.formatters import SimpleDiffFormatter
+from conda_diff.pkg import Package
+from conda_diff.reader import read_env_file
 
 
 class CondaNotFound(Exception):
@@ -26,6 +26,14 @@ def parse_args():
     )
     p.add_argument("-v", "--verbose", action="count")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    p.add_argument(
+        "--ignore-missing-details",
+        action="store_true",
+        help=(
+              "Do not interpret missing values as diff. Missing values can occur comparing outputs of `conda list` "
+              "to `conda export`. Exported yaml files don't provide information for 'platform', 'channel', 'base_url'."
+        ),
+    )
 
     args = p.parse_args()
     return args
@@ -49,7 +57,7 @@ def main():
     lists = []
     for env in [args.environment_a, args.environment_b]:
         if pathlib.Path(env).exists():
-            env_list = read_env_json_file(pathlib.Path(env))
+            env_list = read_env_file(pathlib.Path(env))
             lists.append(env_list)
         else:
             lists.append(get_conda_list(env))
@@ -57,7 +65,7 @@ def main():
     environment_a = CondaEnvironment(args.environment_a, lists[0])
     environment_b = CondaEnvironment(args.environment_b, lists[1])
 
-    diff = conda_environment_diff(environment_a, environment_b)
+    diff = conda_environment_diff(environment_a, environment_b, ignore_missing_details=args.ignore_missing_details)
 
     verbosity = 0
     if args.verbose is not None:

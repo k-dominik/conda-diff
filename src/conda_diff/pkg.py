@@ -1,5 +1,13 @@
 from dataclasses import asdict, dataclass
-from typing import Iterable, Union, Dict
+from enum import Enum
+from typing import Iterable, List, Literal, Type, Union
+
+
+class Missing(Enum):
+    token = 0
+
+
+_missing = Missing.token
 
 
 class PackageDiffException(Exception):
@@ -9,13 +17,13 @@ class PackageDiffException(Exception):
 @dataclass(eq=True, frozen=True, repr=True)
 class Package:
     name: str
-    base_url: str
-    build_number: int
     build_string: str
-    channel: str
     dist_name: str
-    platform: str
     version: str
+    build_number: Union[int, Missing] = _missing
+    platform: Union[str, Missing] = _missing
+    channel: Union[str, Missing] = _missing
+    base_url: Union[str, Missing] = _missing
 
 
 @dataclass(frozen=True, repr=True)
@@ -28,11 +36,11 @@ class Diff:
 @dataclass(frozen=True, repr=True)
 class PackageDiff:
     name: str
-    common: Iterable[Dict[str, Union[str, int]]]
+    common: List[Package]
     diff: Iterable[Diff]
 
 
-def package_diff(package_a: Package, package_b: Package) -> PackageDiff:
+def package_diff(package_a: Package, package_b: Package, ignore_missing_details:bool=False) -> PackageDiff:
     if package_a == package_b:
         return PackageDiff(name=package_a.name, common=asdict(package_a), diff=[])
     if package_a.name != package_b.name:
@@ -42,8 +50,10 @@ def package_diff(package_a: Package, package_b: Package) -> PackageDiff:
     package_diff = []
     package_common = {}
     for k, v in spec_a.items():
-        if spec_b[k] != v:
-            package_diff.append(Diff(k, v, spec_b[k]))
+        if (b_v := spec_b[k]) != v:
+            if ignore_missing_details and any(x == _missing for x in [v, b_v]):
+                continue
+            package_diff.append(Diff(k, v, b_v))
         else:
             package_common[k] = v
 
