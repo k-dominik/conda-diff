@@ -27,7 +27,9 @@ jobs:
         run: |
           conda develop src
           pytest --cov-report=xml --cov=conda_diff
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           files: ./coverage.xml,
           fail_ci_if_error: true # optional (default = false)
