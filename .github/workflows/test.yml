@@ -16,7 +16,7 @@ jobs:
           # for codecov
           fetch-depth: 5
       - name: setup conda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           environment-file: dev/environment-dev.yaml
           activate-environment: test-env
