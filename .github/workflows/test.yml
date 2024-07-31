@@ -20,6 +20,7 @@ jobs:
         with:
           environment-file: dev/environment-dev.yaml
           activate-environment: test-env
+          miniforge-version: latest
           auto-update-conda: true
           auto-activate-base: false
       - name: test

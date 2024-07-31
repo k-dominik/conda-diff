@@ -15,6 +15,7 @@ jobs:
       - name: setup conda
         uses: conda-incubator/setup-miniconda@v3
         with:
+          miniforge-version: latest
           auto-update-conda: true
           auto-activate-base: true
           activate-environment: ""
