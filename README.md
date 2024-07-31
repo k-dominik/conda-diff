@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/k-dominik/conda-diff.svg?branch=master)](https://travis-ci.org/k-dominik/conda-diff)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Current bin version](https://anaconda.org/kdominik/conda-diff/badges/version.svg)](https://anaconda.org/kdominik/conda-diff)
+[![codecov](https://codecov.io/gh/k-dominik/conda-diff/graph/badge.svg?token=V5CTK4CFF6)](https://codecov.io/gh/k-dominik/conda-diff)
 
 Command line tool to compare conda environments
 
@@ -14,7 +15,15 @@ $ conda install -c kdominik -c conda-forge conda-diff
 
 ## Usage
 
-Usage is still very limited. You can two compare different existing conda environments and/or conda lists generated with `conda list --json` or `conda create --json` (e.g. from dry-run).
+Usage is still limited.
+
+You can compare environments specified by either
+* environment name (will run `conda list --json`)
+* `.json` files created with `conda list --json`
+* `.yaml` files created with `conda export`[^1]
+
+
+You can two compare different existing conda environments and/or conda lists generated with `conda list --json` or `conda create --json` (e.g. from dry-run).
 
 ```bash
 $ conda create -n tmp --dry-run --json -c conda-forge python=3.6 > py36.json
@@ -98,3 +107,8 @@ Todos:
 - [ ] add more, better formatters
   - [ ] `.md` output
 - [ ] add json output
+- [ ] support pip dependencies
+- [ ] support missing build strings
+
+
+[^1]: comparisons with `environment.yaml` files are limited as these don't include per-package channel information
