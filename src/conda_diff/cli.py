@@ -30,8 +30,8 @@ def parse_args():
         "--ignore-missing-details",
         action="store_true",
         help=(
-              "Do not interpret missing values as diff. Missing values can occur comparing outputs of `conda list` "
-              "to `conda export`. Exported yaml files don't provide information for 'platform', 'channel', 'base_url'."
+            "Do not interpret missing values as diff. Missing values can occur comparing outputs of `conda list` "
+            "to `conda export`. Exported yaml files don't provide information for 'platform', 'channel', 'base_url'."
         ),
     )
 
@@ -39,7 +39,7 @@ def parse_args():
     return args
 
 
-def get_conda_list(environment_name: str) -> Iterable[Mapping[str, Union[int, str]]]:
+def get_conda_named_env_list(environment_name: str) -> Iterable[Mapping[str, Union[int, str]]]:
     try:
         specs = check_output(["conda", "list", "--name", environment_name, "--json"])
     except FileNotFoundError:
@@ -51,16 +51,31 @@ def get_conda_list(environment_name: str) -> Iterable[Mapping[str, Union[int, st
     return [Package(**x) for x in spec_list]
 
 
+def get_conda_prefix_env_list(environment_name: str) -> Iterable[Mapping[str, Union[int, str]]]:
+    try:
+        specs = check_output(["conda", "list", "--prefix", environment_name, "--json"])
+    except FileNotFoundError:
+        raise CondaNotFound("Conda seems not to be installed or set up properly.")
+
+    spec_list = json.loads(specs)
+    assert isinstance(spec_list, list)
+
+    return [Package(**x) for x in spec_list]
+
+
 def main():
     args = parse_args()
+    print("HEHEHEHEHE")
 
     lists = []
     for env in [args.environment_a, args.environment_b]:
-        if pathlib.Path(env).exists():
+        if pathlib.Path(env).exists() and pathlib.Path(env).is_file():
             env_list = read_env_file(pathlib.Path(env))
             lists.append(env_list)
+        elif pathlib.Path(env).exists() and pathlib.Path(env).is_dir():
+            lists.append(get_conda_prefix_env_list(env))
         else:
-            lists.append(get_conda_list(env))
+            lists.append(get_conda_named_env_list(env))
 
     environment_a = CondaEnvironment(args.environment_a, lists[0])
     environment_b = CondaEnvironment(args.environment_b, lists[1])
