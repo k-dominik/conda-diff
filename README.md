@@ -19,6 +19,7 @@ Usage is still limited.
 
 You can compare environments specified by either
 * environment name (will run `conda list --json`)
+* environment prefix (will run `conda list --json`)
 * `.json` files created with `conda list --json`
 * `.yaml` files created with `conda export`[^1]
 
@@ -111,4 +112,4 @@ Todos:
 - [ ] support missing build strings
 
 
-[^1]: comparisons with `environment.yaml` files are limited as these don't include per-package channel information
+[^1]: comparisons with `environment.yaml` files are limited as these don't include per-package channel information. If one of the arguments points to such a yaml file it's recommended to add the `--ignore-missing-details` flag.
