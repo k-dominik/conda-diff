@@ -1,6 +1,6 @@
 # conda-diff
 
-[![Build Status](https://travis-ci.org/k-dominik/conda-diff.svg?branch=master)](https://travis-ci.org/k-dominik/conda-diff)
+[![test](https://github.com/k-dominik/conda-diff/actions/workflows/test.yml/badge.svg)](https://github.com/k-dominik/conda-diff/actions/workflows/test.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Current bin version](https://anaconda.org/kdominik/conda-diff/badges/version.svg)](https://anaconda.org/kdominik/conda-diff)
 [![codecov](https://codecov.io/gh/k-dominik/conda-diff/graph/badge.svg?token=V5CTK4CFF6)](https://codecov.io/gh/k-dominik/conda-diff)
