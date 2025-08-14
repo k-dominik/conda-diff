@@ -2,7 +2,7 @@ import json
 import pathlib
 from argparse import ArgumentParser
 from subprocess import check_output
-from typing import Iterable, Mapping, Union
+from typing import Iterable
 
 from conda_diff import __version__
 from conda_diff.env import CondaEnvironment, conda_environment_diff
@@ -39,7 +39,7 @@ def parse_args():
     return args
 
 
-def get_conda_named_env_list(environment_name: str) -> Iterable[Mapping[str, Union[int, str]]]:
+def get_conda_named_env_list(environment_name: str) -> Iterable[Package]:
     try:
         specs = check_output(["conda", "list", "--name", environment_name, "--json"])
     except FileNotFoundError:
@@ -51,7 +51,7 @@ def get_conda_named_env_list(environment_name: str) -> Iterable[Mapping[str, Uni
     return [Package(**x) for x in spec_list]
 
 
-def get_conda_prefix_env_list(environment_name: str) -> Iterable[Mapping[str, Union[int, str]]]:
+def get_conda_prefix_env_list(environment_name: str) -> Iterable[Package]:
     try:
         specs = check_output(["conda", "list", "--prefix", environment_name, "--json"])
     except FileNotFoundError:

@@ -51,7 +51,7 @@ def _yaml_data_adapter(dep_str: str) -> Dict[str, Union[str, int]]:
         bldnum = None
 
     try:
-        ret_dict = {
+        ret_dict: dict[str, Union[str, int]] = {
             "dist_name": f"{name}-{version}-{bld}",
             "name": name,
             "build_string": bld,
