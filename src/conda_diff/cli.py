@@ -65,14 +65,18 @@ def get_conda_prefix_env_list(environment_name: str) -> Iterable[Mapping[str, Un
 
 def main():
     args = parse_args()
-    print("HEHEHEHEHE")
 
     lists = []
+
+    should_warn_yaml = False
     for env in [args.environment_a, args.environment_b]:
-        if pathlib.Path(env).exists() and pathlib.Path(env).is_file():
-            env_list = read_env_file(pathlib.Path(env))
+        env_pth = pathlib.Path(env)
+        if env_pth.exists() and env_pth.is_file():
+            if env_pth.suffix in [".yml", ".yaml"]:
+                should_warn_yaml = True
+            env_list = read_env_file(env_pth)
             lists.append(env_list)
-        elif pathlib.Path(env).exists() and pathlib.Path(env).is_dir():
+        elif env_pth.exists() and env_pth.is_dir():
             lists.append(get_conda_prefix_env_list(env))
         else:
             lists.append(get_conda_named_env_list(env))
@@ -88,6 +92,11 @@ def main():
 
     formatter = SimpleDiffFormatter(diff, verbosity=verbosity)
     print(formatter)
+
+    if should_warn_yaml and not args.ignore_missing_details:
+        print(
+            "Note: environment yaml files miss certain metadata, consider using the `--ignore-missing-details` flag for less noisy diffs."
+        )
 
 
 if __name__ == "__main__":

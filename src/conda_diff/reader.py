@@ -11,6 +11,7 @@ def read_env_file(env_list_path: Path) -> List[Package]:
     if env_list_path.suffix == ".json":
         return read_env_json_file(env_list_path)
     elif env_list_path.suffix in [".yml", ".yaml"]:
+
         return read_env_yaml_file(env_list_path)
 
     raise NotImplementedError(f"Reading not implemented for {env_list_path.name} file.")
